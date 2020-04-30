@@ -6,6 +6,18 @@ const fs = require('fs');
 const uuid = require('uuid');
 const os = require('os');
 
+// For starter kit env.
+require('dotenv').config({
+  silent: true
+});
+const pEnv = process.env;
+if (pEnv.service_watson_visual_recognition && !pEnv.VCAP_SERVICES && !pEnv.WATSON_VISION_COMBINED_APIKEY && !pEnv.WATSON_VISION_COMBINED_URL && !pEnv.WATSON_VISION_COMBINED_USERNAME) {
+  // If we don't have the expected environment variables, use the starter kit apikey and url.
+  let skitJson = JSON.parse(pEnv.service_watson_visual_recognition);
+  process.env.WATSON_VISION_COMBINED_APIKEY = skitJson.apikey;
+  process.env.WATSON_VISION_COMBINED_URL = skitJson.url;
+}
+
 require('./config/express')(app);
 
 /**
